@@ -1,0 +1,30 @@
+version: "3.6"
+services:
+  server:
+    build: .
+    volumes:
+      - ./:/app
+    ports:
+      - "3000:3000"
+    env_file:
+      - env
+    links:
+      - postgres
+  postgres:
+    image: postgres:12
+    restart: always
+    ports: 
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+networks:
+  default:
+    external:
+      name: general
+  general:
+    external: true
+volumes:
+  db_data:
