@@ -4,13 +4,13 @@ import { FavoriteProductsEntity } from './favorite-product'
 @Entity('customers')
 export class CustomerEntity {
   @PrimaryGeneratedColumn()
-  id?: number
+  id: number
 
   @Column({ unique: true })
-  email?: string
+  email: string
 
   @Column()
-  name?: string
+  name: string
 
   @OneToMany(type => FavoriteProductsEntity, favorite_product => favorite_product.customer)
   favorite_products?: FavoriteProductsEntity[]

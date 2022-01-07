@@ -49,7 +49,7 @@ export class FavoriteProductController {
       const favoriteProducts = await this.favoriteProductService.index(req.query.customerId)
 
       await Promise.all( favoriteProducts.map( async favoriteProduct => {
-        favoriteProduct.product = await this.productService.findOne(favoriteProduct.productId || '')
+        favoriteProduct.product = await this.productService.findOne(favoriteProduct.productId)
       }))
 
 
@@ -66,7 +66,7 @@ export class FavoriteProductController {
       const favoriteProduct = await this.favoriteProductService.findOne(id)
 
       if (favoriteProduct) {
-        favoriteProduct.product = await this.productService.findOne(favoriteProduct.productId || '')
+        favoriteProduct.product = await this.productService.findOne(favoriteProduct.productId)
         return res.status(200).send(favoriteProduct)
       }
 

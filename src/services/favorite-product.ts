@@ -34,7 +34,7 @@ export class FavoriteProductService {
   ): Promise<FavoriteProductsEntity> {
     const { productId } = favoriteProduct
 
-    const product = await this.productService.findOne(productId || '')
+    const product = await this.productService.findOne(productId)
 
     if (!product) {
       throw new Error('Product not found!')

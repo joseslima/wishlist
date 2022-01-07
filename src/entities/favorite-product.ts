@@ -12,16 +12,16 @@ import { ProductEntity } from './product'
 @Unique(['customerId', 'productId'])
 export class FavoriteProductsEntity {
   @PrimaryGeneratedColumn()
-  id?: number
+  id: number
 
   @Column('uuid')
-  productId?: string
+  productId: string
 
   product?: ProductEntity
   
   @Column()
-  customerId?: number
+  customerId: number
 
   @ManyToOne((type) => CustomerEntity, (customer) => customer.favorite_products)
-  customer?: CustomerEntity
+  customer: CustomerEntity
 }
