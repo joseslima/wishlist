@@ -1,14 +1,14 @@
 import { Request, Response } from 'express'
 import { CustomerEntity } from '../entities/customer'
-import { ClientService } from '../services/customer'
+import { CustomerService } from '../services/customer'
 import { pickBy } from 'lodash'
 
 export class CustomerController {
-  private clientService: ClientService
+  private clientService: CustomerService
   private clientAttributes = ['id', 'name', 'email']
 
   constructor() {
-    this.clientService = new ClientService()
+    this.clientService = new CustomerService()
   }
 
   private errorHandler(res: Response, error: any) {
