@@ -1,35 +1,49 @@
 import { getRepository, Repository } from 'typeorm'
 import { FavoriteProductsEntity } from '../entities/favorite-product'
+import { ProductService } from './product'
 
 export class FavoriteProductService {
   private favoriteProductRepository: Repository<FavoriteProductsEntity>
+  private productService: ProductService
+
   constructor() {
     this.favoriteProductRepository = getRepository(FavoriteProductsEntity)
+    this.productService = new ProductService()
   }
 
-  public async index(): Promise<any> {
-    return this.favoriteProductRepository.find()
+  public async index(
+    customerId?: string | string[] | any
+  ): Promise<FavoriteProductsEntity[]> {
+    let where = {}
+
+    if (customerId) {
+      where = { customerId: customerId }
+    }
+
+    return this.favoriteProductRepository.find({ where })
   }
 
-  public async findOne(id: number): Promise<any> {
+  public async findOne(
+    id: number
+  ): Promise<FavoriteProductsEntity | undefined> {
     return this.favoriteProductRepository.findOne(id)
   }
 
-  public async create(client: FavoriteProductsEntity) {
-    return this.favoriteProductRepository.save(client)
-  }
+  public async create(
+    favoriteProduct: FavoriteProductsEntity
+  ): Promise<FavoriteProductsEntity> {
+    const { productId } = favoriteProduct
 
-  public async update(client: FavoriteProductsEntity, id: number) {
-    const updateResponse = await this.favoriteProductRepository.update(id, client)
-    // update still doesn't directly return the result of the modified object
-    // https://github.com/typeorm/typeorm/issues/2415
-    if (updateResponse.affected) {
-      return this.favoriteProductRepository.findOne(id)
+    const product = await this.productService.findOne(productId || '')
+
+    if (!product) {
+      throw new Error('Product not found!')
     }
-    return
+
+    return this.favoriteProductRepository.save(favoriteProduct)
   }
 
-  public async delete(id: number) {
+  public async delete(id: number): Promise<number | null | undefined> {
     const deleteResponse = await this.favoriteProductRepository.delete(id)
     return deleteResponse.affected
   }

@@ -1,38 +1,36 @@
 import { getRepository, Repository } from 'typeorm'
 import { CustomerEntity } from '../entities/customer'
 
-export class ClientService {
-  private clientRepository: Repository<CustomerEntity>
+export class CustomerService {
+  private customerRepository: Repository<CustomerEntity>
   constructor() {
-    this.clientRepository = getRepository(CustomerEntity)
+    this.customerRepository = getRepository(CustomerEntity)
   }
 
-  public async index(): Promise<any> {
-    return this.clientRepository.find()
+  public async index(): Promise<CustomerEntity[]> {
+    return this.customerRepository.find()
   }
 
-  public async findOne(id: number): Promise<any> {
-    return this.clientRepository.findOne(id)
+  public async findOne(id: number): Promise<CustomerEntity | undefined> {
+    return this.customerRepository.findOne(id)
   }
 
-  public async create(client: CustomerEntity) {
-    return this.clientRepository.save(client)
+  public async create(client: CustomerEntity): Promise<CustomerEntity> {
+    return this.customerRepository.save(client)
   }
 
-  public async update(client: CustomerEntity, id: number) {
-    const updateResponse = await this.clientRepository.update(id, client)
+  public async update(client: CustomerEntity, id: number): Promise<CustomerEntity | undefined> {
+    const updateResponse = await this.customerRepository.update(id, client)
     // update still doesn't directly return the result of the modified object
     // https://github.com/typeorm/typeorm/issues/2415
     if (updateResponse.affected) {
-      return this.clientRepository.findOne(id)
+      return this.customerRepository.findOne(id)
     }
     return
   }
 
-  public async delete(id: number) {
-    console.log('delete')
-    const deleteResponse = await this.clientRepository.delete(id)
-    console.log({ deleteResponse })
+  public async delete(id: number): Promise<number | undefined | null>  {
+    const deleteResponse = await this.customerRepository.delete(id)
     return deleteResponse.affected
   }
 }

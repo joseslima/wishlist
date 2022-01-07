@@ -9,7 +9,7 @@ export class CustomerRouter {
 
   private validation = [
     body('name').isString(),
-    body('email').isEmail(),
+    body('email').isEmail().notEmpty(),
     requestValidation,
   ]
 
@@ -17,19 +17,19 @@ export class CustomerRouter {
     this.router = Router()
     this.controller = new CustomerController()
 
-    this.router.get('/clients', async (req: Request, res: Response) =>
+    this.router.get('/customers', async (req: Request, res: Response) =>
       this.controller.index(req, res)
     )
-    this.router.get('/clients/:id', async (req: Request, res: Response) =>
+    this.router.get('/customers/:id', async (req: Request, res: Response) =>
       this.controller.show(req, res)
     )
-    this.router.post('/clients', this.validation, async (req: Request, res: Response) =>
+    this.router.post('/customers', this.validation, async (req: Request, res: Response) =>
       this.controller.store(req, res)
     )
-    this.router.put('/clients/:id', this.validation, async (req: Request, res: Response) =>
+    this.router.put('/customers/:id', this.validation, async (req: Request, res: Response) =>
       this.controller.update(req, res)
     )
-    this.router.delete('/clients/:id', async (req: Request, res: Response) =>
+    this.router.delete('/customers/:id', async (req: Request, res: Response) =>
       this.controller.destroy(req, res)
     )
   }

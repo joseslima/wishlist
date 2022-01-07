@@ -6,6 +6,7 @@ import {
   Unique,
 } from 'typeorm'
 import { CustomerEntity } from './customer'
+import { ProductEntity } from './product'
 
 @Entity('favoriteProducts')
 @Unique(['customerId', 'productId'])
@@ -16,6 +17,8 @@ export class FavoriteProductsEntity {
   @Column('uuid')
   productId?: string
 
+  product?: ProductEntity
+  
   @Column()
   customerId?: number
 
