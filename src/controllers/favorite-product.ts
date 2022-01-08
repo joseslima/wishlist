@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { FavoriteProductsEntity } from '../entities/favorite-product'
 import { FavoriteProductService } from '../services/favorite-product'
 import { ProductService } from '../services/product'
+import { RequestWithAuth } from '../types'
 
 import { pickBy } from 'lodash'
 
@@ -16,7 +17,6 @@ export class FavoriteProductController {
   }
 
   private errorHandler(res: Response, error: any) {
-    
     if (
       error.message.includes('duplicate key value violates unique constraint')
     ) {
@@ -30,7 +30,7 @@ export class FavoriteProductController {
     if (error.message.includes('Product not found')) {
       res.status(404).send({
         status: 404,
-        message:error.message,
+        message: error.message,
       })
       return
     }
@@ -44,14 +44,21 @@ export class FavoriteProductController {
     })
   }
 
-  public async index(req: Request, res: Response) {
+  public async index(req: RequestWithAuth, res: Response) {
     try {
-      const favoriteProducts = await this.favoriteProductService.index(req.query.customerId)
+      const { customerId } = req
 
-      await Promise.all( favoriteProducts.map( async favoriteProduct => {
-        favoriteProduct.product = await this.productService.findOne(favoriteProduct.productId)
-      }))
+      const favoriteProducts = await this.favoriteProductService.index(
+        customerId
+      )
 
+      await Promise.all(
+        favoriteProducts.map(async (favoriteProduct) => {
+          favoriteProduct.product = await this.productService.findOne(
+            favoriteProduct.productId
+          )
+        })
+      )
 
       res.send(favoriteProducts)
     } catch (error) {
@@ -59,25 +66,20 @@ export class FavoriteProductController {
     }
   }
 
-  public async show(req: Request, res: Response) {
+  public async store(req: RequestWithAuth, res: Response) {
     try {
-      
-      const id = Number(req.params.id)
-      const favoriteProduct = await this.favoriteProductService.findOne(id)
+      const { body, customerId } = req
 
-      if (favoriteProduct) {
-        favoriteProduct.product = await this.productService.findOne(favoriteProduct.productId)
-        return res.status(200).send(favoriteProduct)
+      if (body.customerId) {
+        if (body.customerId !== customerId) {
+          return res
+            .status(403)
+            .send({ status: 403, message: 'Not authorized!' })
+        }
+      } else {
+        body.customerId = customerId
       }
 
-      res.status(404).send()
-    } catch (error) {
-      this.errorHandler(res, error)
-    }
-  }
-
-  public async store(req: Request, res: Response) {
-    try {
       const favoriteProductData = this.onlyAttributes(
         req.body
       ) as FavoriteProductsEntity
@@ -90,9 +92,20 @@ export class FavoriteProductController {
     }
   }
 
-  public async destroy(req: Request, res: Response) {
+  public async destroy(req: RequestWithAuth, res: Response) {
     try {
+      const { customerId } = req
+
       const id = Number(req.params.id)
+
+      const favoriteProduct = await this.favoriteProductService.findOne(id)
+
+      if (favoriteProduct?.customerId !== customerId) {
+        return res
+            .status(403)
+            .send({ status: 403, message: 'Not authorized!' })
+      }
+
       const deleteClientResponse = await this.favoriteProductService.delete(id)
       res.status(deleteClientResponse ? 200 : 404).send({ success: true })
     } catch (error) {

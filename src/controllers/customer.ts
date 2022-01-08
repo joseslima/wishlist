@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { CustomerEntity } from '../entities/customer'
 import { CustomerService } from '../services/customer'
+import { RequestWithAuth } from '../types'
 import { pickBy } from 'lodash'
 
 export class CustomerController {
@@ -32,8 +33,8 @@ export class CustomerController {
 
   public async index(req: Request, res: Response) {
     try {
-      const clients = await this.clientService.index()
-      res.send(clients)
+      const customers = await this.clientService.index()
+      res.send(customers)
     } catch (error) {
       this.errorHandler(res, error)
     }
@@ -42,7 +43,7 @@ export class CustomerController {
   public async show(req: Request, res: Response) {
     try {
       const id = Number(req.params.id)
-      const client = await this.clientService.findOne(id)
+      const client = await this.clientService.findOne({ id })
       res.status(client ? 200 : 404).send(client)
     } catch (error) {
       this.errorHandler(res, error)
@@ -59,20 +60,35 @@ export class CustomerController {
     }
   }
 
-  public async update(req: Request, res: Response) {
+  public async update(req: RequestWithAuth, res: Response) {
     try {
       const clientData = this.onlyAttributes(req.body) as CustomerEntity
       const id = Number(req.params.id)
+
       const updatedClient = await this.clientService.update(clientData, id)
+
+      const { customerId } = req
+
+      if (customerId !== id) {
+        return res.status(403).send({ status: 403, message: 'Not authorized!' })
+      }
+
       res.status(updatedClient ? 200 : 404).send(updatedClient)
     } catch (error) {
       this.errorHandler(res, error)
     }
   }
 
-  public async destroy(req: Request, res: Response) {
+  public async destroy(req: RequestWithAuth, res: Response) {
     try {
       const id = Number(req.params.id)
+
+      const { customerId } = req
+
+      if (customerId !== id) {
+        return res.status(403).send({ status: 403, message: 'Not authorized!' })
+      }
+
       const deleteClientResponse = await this.clientService.delete(id)
       res.status(deleteClientResponse ? 200 : 404).send({ success: true })
     } catch (error) {
