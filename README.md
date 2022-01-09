@@ -83,7 +83,7 @@ As únicas rotas que não necessitam de autenticação são as de criação e li
 
 	Exemplo de header:
 
-		{
-			"Authorization": "myKey"
-		}
+	  {
+	    "Authorization": "myKey"
+	  }
 
