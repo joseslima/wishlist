@@ -3,6 +3,7 @@ import { CustomerController } from '../controllers/customer'
 import { body } from 'express-validator'
 import { requestValidation } from '../middlewares/request-validation'
 import { checkJWT } from '../middlewares/auth'
+
 export class CustomerRouter {
   public router: Router
   public controller: CustomerController
