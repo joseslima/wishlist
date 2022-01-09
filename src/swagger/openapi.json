@@ -1,0 +1,367 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a simple example NodeJS API project to demonstrate Swagger Documentation",
+    "version": "1.0.0",
+    "title": "Wishlist API"
+  },
+  "schemes": ["http"],
+  "host": "localhost:3000",
+  "basePath": "/",
+  "securitySchemes": {
+    "api_key": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "paths": {
+    "/customers": {
+      "get": {
+        "summary": "Retorna todos os clientes",
+        "description": "Retorna todos os clientes",
+        "produces": ["application/json"],
+        "tags": ["Clientes"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Customer"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cadastra um cliente",
+        "description": "Cadastra um cliente",
+        "tags": ["Clientes"],
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Dados do cliente",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/SetCustomerData"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/Customer"
+            }
+          }
+        }
+      }
+    },
+    "/customers/:id": {
+      "put": {
+        "summary": "Atualiza dados de um cliente",
+        "description": "Atualiza dados de um cliente",
+        "produces": ["application/json"],
+        "tags": ["Clientes"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "type": "int"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Dados do cliente",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/SetCustomerData"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "type": "array",
+              "$ref": "#/definitions/Customer"
+            }
+          },
+          "403": {
+            "Description": "Não autorizado. Necessita de autênticação",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deleta um cliente",
+        "description": "Deleta um cliente",
+        "produces": ["application/json"],
+        "tags": ["Clientes"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "type": "int"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "403": {
+            "Description": "Não autorizado. Necessita de autênticação",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/favorite-products": {
+      "get": {
+        "summary": "Retorna lista de produtos favortios",
+        "description": "Retorna lista de produtos favortios",
+        "produces": ["application/json"],
+        "tags": ["Produtos Favoritos"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FavoriteProduct"
+              }
+            }
+          },
+          "403": {
+            "Description": "Não autorizado. Necessita de autênticação",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cadastra um produto favorito",
+        "description": "Cadastra um produto favorito",
+        "tags": ["Produtos Favoritos"],
+        "produces": ["application/json"],
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Dados do produto favorito",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/SetFavoriteProductData"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/FavoriteProduct"
+            }
+          },
+          "403": {
+            "Description": "Não autorizado. Necessita de autênticação",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/favorite-products/:id": {
+      "delete": {
+        "summary": "Deleta um produto favorito de um cliente",
+        "description": "Deleta um produto favorito de um cliente",
+        "produces": ["application/json"],
+        "tags": ["Produtos Favoritos"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do produto favorito",
+            "required": true,
+            "type": "int"
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          },
+          "403": {
+            "Description": "Não autorizado. Necessita de autênticação",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Customer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "SetCustomerData": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "required": true
+        },
+        "email": {
+          "type": "string",
+          "required": true
+        }
+      }
+    },
+    "FavoriteProduct": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "productId": {
+          "type": "UUID"
+        },
+        "customerId": {
+          "type": "number"
+        },
+        "product": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "price": {
+              "type": "integer"
+            },
+            "brand": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "image": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "SetFavoriteProductData": {
+      "type": "object",
+      "properties": {
+        "productId": {
+          "type": "string",
+          "required": true
+        },
+        "customerId": {
+          "type": "number"
+        }
+      }
+    },
+    "InvalidResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "SuccessResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}
