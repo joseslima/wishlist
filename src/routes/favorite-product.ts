@@ -2,7 +2,6 @@ import { Router, Request, Response } from 'express'
 import { FavoriteProductController } from '../controllers/favorite-product'
 import { body } from 'express-validator'
 import { requestValidation } from '../middlewares/request-validation'
-
 import {checkJWT} from '../middlewares/auth'
 
 export class FavoriteProductRouter {
