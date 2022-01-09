@@ -1,5 +1,4 @@
 import { Router, json } from 'express'
-
 import { CustomerRouter } from './customer'
 import { FavoriteProductRouter } from './favorite-product'
 import { AuthRouter } from './auth'
