@@ -83,9 +83,11 @@ export class FavoriteProductController {
       const favoriteProductData = this.onlyAttributes(
         req.body
       ) as FavoriteProductsEntity
+      
       const newFavoriteProduct = await this.favoriteProductService.create(
         favoriteProductData
       )
+      
       res.send(newFavoriteProduct)
     } catch (error: any) {
       this.errorHandler(res, error)
