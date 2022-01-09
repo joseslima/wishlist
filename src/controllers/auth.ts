@@ -16,6 +16,7 @@ export class AuthController {
   public async store(req: Request, res: Response) {
     try {
       const customer = await this.customerService.findOne({ email: req.body.email })
+      
       if (customer) {
         const token = jwt.sign({ id: customer.id }, process.env.JWT_SECRET_KEY || 'secret', { expiresIn: 600 })
         return res.status(200).send({ token })
