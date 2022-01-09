@@ -66,10 +66,11 @@ e autorização.
 	
 	//na raiz do projeto 
 	docker-compose up -d 
+	
 	//ou
 	docker-compose up
 
-	//se quiser visualizar os logs da API, execute o seguinte comando:
+	//se quiser visualizar os logs da API, execute o seguinte comando
         docker-compose logs --tail 1000 -f server
 
 A api será executada na porta 3000 (http://localhost:3000).
