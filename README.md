@@ -65,7 +65,12 @@ e autorização.
 1.3 Execute o arquivo docker-compose.yml na raiz do projeto via terminal. (É necessária a instalação do docker e docker-compose )
 	
 	//na raiz do projeto 
-	docker-compose up -d
+	docker-compose up -d 
+	//ou
+	docker-compose up
+
+	//se quiser visualizar os logs da API, execute o seguinte comando:
+        docker-compose logs --tail 1000 -f server
 
 A api será executada na porta 3000 (http://localhost:3000).
 
