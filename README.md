@@ -41,6 +41,8 @@ e autorização.
 
 # Dependências
 
+● Git
+
 ● NodeJS
 
 ● Docker
@@ -52,6 +54,8 @@ e autorização.
 #### 1. Em ambiente de desenvolvimento é necessário seguir alguns passos:
 
  1.1 Primeiro clone o repositório.
+
+	git clone https://github.com/joseslima/wishlist.git
 
  	1.2 Pode ser necessário instalar as dependências. Para isso acesse a raiz do projeto via terminal e execute os seguintes comandos:
 
