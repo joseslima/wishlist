@@ -39,15 +39,33 @@ simular essa renderização (foque no desenvolvimento da API).
 ● O acesso à api deve ser aberto ao mundo, porém deve possuir autenticação
 e autorização.
 
-# Dependências
-
-● Git
+# Técnologias utilizadas
 
 ● NodeJS
+
+● Typescript
+
+● PostgreSQL
+
+● TypeORM
 
 ● Docker
 
 ● Docker Compose
+
+● jsonwebtoken
+
+# Dependências
+
+Para executar a API localmente, vc precisará das seguintes dependências:
+
+● Git: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+
+● NodeJS: https://nodejs.org/en/download/
+
+● Docker: https://docs.docker.com/engine/install/
+
+● Docker Compose: https://docs.docker.com/compose/install/
 
 # Configuração local
 
